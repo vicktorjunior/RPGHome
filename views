@@ -1,0 +1,34 @@
+1. select per.nome_personagem, p.data_inicio_partida, p.nome_partida from personagens per
+inner join missoes_personagens mp on per.id_personagem = mp.id_personagem
+inner join missoes m on mp.id_missao = m.id_missao
+inner join partidas p on m.id_missao = p.id_missao
+group by per.nome_personagem, p.data_inicio_partida, p.nome_partida
+order by p.data_inicio_partida desc limit 10
+
+2. Liste a duração das ultimas 10 partidas.
+
+select data_inicio_partida, data_final_partida, age(data_final_partida, data_inicio_partida) as duracao from partidas
+order by duracao desc limit 10
+
+3. select nome_classe as "Tem meio" from classes where nome_classe like '%meio%';
+
+4. select nome_classe from classes c
+inner join personagens p on p.id_classe = c.id_classe
+group by c.nome_classe
+having count(id_personagem) >= 10
+
+5.Mostre a média de tempo dos jogadores mais viciados.
+
+select avg(age(p.data_final_partida, p.data_inicio_partida)) as vicio_medio from partidas p
+inner join missoes m on p.id_missao = m.id_missao
+inner join missoes_personagens mp on m.id_missao = mp.id_missao
+inner join personagens per on mp.id_personagem = per.id_personagem
+order by vicio_medio desc limit 10
+
+6. Mostre as partidas ocorridas entre 2015 e 2016.
+
+select nome_partida, data_inicio_partida from partidas
+
+group by nome_partida, data_inicio_partida
+having data_inicio_partida < '2016-12-31' and  data_inicio_partida > '2015-01-01'
+
